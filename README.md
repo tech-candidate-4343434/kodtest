@@ -25,5 +25,5 @@ Bygg en minimal gästbok:
 
 ## 🌿 Git- och branch-policy för kandidaten
 1. Skapa ett **opersonligt GitHub-konto** (t.ex. `tech-candidate-123`).
-2. Forka eller klona detta repo **privat** till ditt konto.  
-3. Skapa en **feature-branch** från `main` med namnet:  
+2. Klona detta repo **privat** till ditt konto.  
+3. Bjud in kontot desertcloud25@gmail.com och ge åtkomst till ditt privata repo.  
