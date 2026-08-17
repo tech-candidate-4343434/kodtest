@@ -7,6 +7,7 @@ import (
 	"html/template"
 	"log/slog"
 	"net/http"
+	"strings"
 
 	"github.com/tech-candidate-4343434/guestbook/internal/store"
 )
@@ -61,13 +62,47 @@ func (h *Handler) Routes(mux *http.ServeMux) {
 }
 
 func (h *Handler) Index(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("index"))
+	ctx := r.Context()
+
+	entries, err := h.queries.ListEntries(ctx)
+	if err != nil {
+		slog.ErrorContext(ctx, "list entries", "error", err)
+		http.Error(w, "failed to load guestbook", http.StatusInternalServerError)
+		return
+	}
+
+	render(w, r, contentTmpl, http.StatusOK, entries)
 }
 
 func (h *Handler) CreateEntry(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("create entry"))
+	ctx := r.Context()
+
+	r.Body = http.MaxBytesReader(w, r.Body, 64<<10)
+	if err := r.ParseForm(); err != nil {
+		http.Error(w, "invalid form submission", http.StatusBadRequest)
+		return
+	}
+
+	name := strings.TrimSpace(r.PostFormValue("name"))
+	message := strings.TrimSpace(r.PostFormValue("message"))
+
+	if name == "" || message == "" {
+		http.Error(w, "name and message are required", http.StatusBadRequest)
+		return
+	}
+
+	if err := h.queries.CreateEntry(ctx, store.CreateEntryParams{
+		Name:    name,
+		Message: message,
+	}); err != nil {
+		slog.ErrorContext(ctx, "create entry", "error", err)
+		http.Error(w, "failed to create entry", http.StatusInternalServerError)
+		return
+	}
+
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
 func (h *Handler) NotFound(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("not found"))
+	render(w, r, notFoundTmpl, http.StatusNotFound, nil)
 }
