@@ -1,0 +1,7 @@
+services:
+  guestbook:
+    build: .
+    container_name: guestbook
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
