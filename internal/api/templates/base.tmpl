@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ block "title" . }}Guestbook{{ end }}</title>
+    <style>
+        :root {
+            color-scheme: light dark;
+            --bg: light-dark(#fbfaf7, #16161a);
+            --surface: light-dark(#ffffff, #1e1e24);
+            --border: light-dark(#e2ddd3, #32323c);
+            --text: light-dark(#1b1b1f, #eceaf0);
+            --muted: light-dark(#6b6a72, #9a99a4);
+            --accent: light-dark(#3d5afe, #8fa2ff);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 2.5rem 1.25rem;
+            background: var(--bg);
+            color: var(--text);
+            font: 1rem/1.55 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+        }
+
+        main {
+            max-width: 42rem;
+            margin: 0 auto;
+        }
+
+        h1 {
+            margin: 0 0 1.75rem;
+            font-size: 1.75rem;
+            letter-spacing: -0.02em;
+        }
+
+        .entry-form {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            padding: 1.25rem;
+            margin-bottom: 2.5rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+        }
+
+        .entry-form label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--muted);
+        }
+
+        .entry-form label + * {
+            margin-bottom: 0.6rem;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 0.55rem 0.7rem;
+            font: inherit;
+            color: inherit;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        input:focus-visible,
+        textarea:focus-visible,
+        button:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 1px;
+        }
+
+        button {
+            align-self: flex-start;
+            padding: 0.55rem 1.1rem;
+            font: inherit;
+            font-weight: 600;
+            color: var(--bg);
+            background: var(--accent);
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+        }
+
+        button:hover {
+            filter: brightness(1.08);
+        }
+
+        .entries {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .entry {
+            padding: 0.9rem 1.1rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+        }
+
+        .entry-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 1rem;
+            margin-bottom: 0.35rem;
+        }
+
+        .entry-name {
+            font-weight: 600;
+        }
+
+        .entry-time {
+            font-size: 0.8rem;
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        .entry-message {
+            margin: 0;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .empty {
+            padding: 2rem 1rem;
+            text-align: center;
+            color: var(--muted);
+        }
+
+        .notfound {
+            padding-top: 4rem;
+            text-align: center;
+        }
+
+        .notfound-code {
+            margin: 0;
+            font-size: 4rem;
+            font-weight: 700;
+            line-height: 1;
+            letter-spacing: -0.04em;
+            color: var(--accent);
+        }
+
+        .notfound h1 {
+            margin: 0.75rem 0 0.5rem;
+        }
+
+        .notfound-message {
+            margin: 0 0 1.75rem;
+            color: var(--muted);
+        }
+
+        .notfound-link {
+            color: var(--accent);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .notfound-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+{{ block "content" . }}{{ end }}
+</body>
+</html>

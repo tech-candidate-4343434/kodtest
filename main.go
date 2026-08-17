@@ -13,9 +13,11 @@ import (
 	"os/signal"
 	"time"
 
-	_ "github.com/mattn/go-sqlite3"
 	"github.com/pressly/goose/v3"
+	"github.com/tech-candidate-4343434/guestbook/internal/api"
+	"github.com/tech-candidate-4343434/guestbook/internal/store"
 	"golang.org/x/sync/errgroup"
+	_ "modernc.org/sqlite"
 )
 
 const migrationsDir = "sql/migrations"
@@ -49,7 +51,7 @@ func run(ctx context.Context) error {
 	}))
 	slog.SetDefault(logger)
 
-	db, err := sql.Open("sqlite3", *dsn)
+	db, err := sql.Open("sqlite", *dsn)
 	if err != nil {
 		return fmt.Errorf("open database: %w", err)
 	}
@@ -59,7 +61,7 @@ func run(ctx context.Context) error {
 		}
 	}()
 
-	if err := goose.SetDialect("sqlite3"); err != nil {
+	if err := goose.SetDialect("sqlite"); err != nil {
 		return fmt.Errorf("could not set goose dialect: %w", err)
 	}
 
@@ -69,7 +71,7 @@ func run(ctx context.Context) error {
 	}
 
 	mux := http.NewServeMux()
-
+	api.NewHandler(store.New(db)).Routes(mux)
 	srv := &http.Server{
 		Addr:    *addr,
 		Handler: mux,
